@@ -1,6 +1,6 @@
 docker run --tty \
-           --network sink_kafka-connect \
-           -v /Users/aqua-len/Downloads/jdbs-kafka-postgres-connector/sink/data/test-data-marvel.json:/test-data-marvel.json\
+           --network postgres_kafka-connect \
+           -v /Users/aqua-len/IdeaProjects/jdbs-kafka-connectors/postgres/data/test-data-marvel.txt:/test-data-marvel.txt\
            confluentinc/cp-kafkacat \
            bash -c "
             cat /test-data-marvel.txt | kafkacat  \
