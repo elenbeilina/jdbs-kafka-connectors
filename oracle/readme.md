@@ -1,4 +1,4 @@
-### App for moving data form kafka topic to oracle database table.
+### App for moving data form kafka topic to postgres database table.
 
 ---
 #### Environment:
@@ -11,7 +11,7 @@
 
  1. Go to postgres directory:
     ```
-    cd postgres
+    cd oracle
     ```
  2. Run docker environment:
     ```
@@ -21,7 +21,10 @@
     ```
     sh create-connector.sh
     ```
- 4. Produce test data to kafka topic:
+ 4. Change local path to `test-data-marvel.txt` in `produce-data.sh`
+
+
+ 5. Produce test data to kafka topic:
     ```
     sh produce-data.sh
     ```
