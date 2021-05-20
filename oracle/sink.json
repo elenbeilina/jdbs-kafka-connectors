@@ -4,9 +4,9 @@
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
     "tasks.max": "1",
     "topics": "main",
-    "connection.url":"jdbc:oracle:thin:@localhost:11521:XE",
+    "connection.url":"jdbc:oracle:thin:@oracle:1521:XE",
     "connection.user": "SYSTEM",
-    "connection.password": "test12345",
+    "connection.password": "testing12345",
     "auto.create":true,
 
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
