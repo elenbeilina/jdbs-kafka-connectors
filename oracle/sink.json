@@ -9,7 +9,12 @@
     "connection.password": "testing12345",
     "auto.create":true,
 
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "true"
+    "value.converter.schemas.enable": "false",
+
+    "transforms": "xml_value",
+    "transforms.flatten.type": "org.apache.kafka.connect.transforms.Flatten$Value",
+    "transforms.flatten.delimiter": "_",
+    "transforms.xml_value.type": "com.github.jcustenborder.kafka.connect.transform.xml.FromXml$Value",
+    "transforms.xml_value.schema.path": "file:///usr/share/xsd-schemas/ASN.xsd"
   }
 }

@@ -49,6 +49,8 @@ services:
     depends_on:
       - zookeeper
       - broker
+    volumes:
+      - "../oracle/data/:/usr/share/xsd-schemas/"
     ports:
       - "8083:8083"
     environment:
@@ -76,6 +78,7 @@ services:
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
     command: "bash -c 'echo Installing connector plugins && \
                            confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:5.5.0 && \
+                           confluent-hub install --no-prompt jcustenborder/kafka-connect-transform-xml:0.1.0.20 && \
                            echo Downloading JDBC drivers && \
                            cd /usr/share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib && \
                            curl https://maven.xwiki.org/externals/com/oracle/jdbc/ojdbc8/12.2.0.1/ojdbc8-12.2.0.1.jar -o ojdbc8-12.2.0.1.jar && \
