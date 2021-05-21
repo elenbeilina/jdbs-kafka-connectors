@@ -21,7 +21,7 @@
     ```
     sh create-connector.sh
     ```
- 4. Change local path to `test-data-marvel.txt` in `produce-data.sh`
+ 4. Change local path to `ASN.xsd` in `produce-data.sh`
 
 
  5. Produce test data to kafka topic:
@@ -33,6 +33,6 @@ Result can be checked via connecting to database.
 
 **Database properties**:
 
-URL: `jdbc:postgresql://localhost:5432/postgres` \
-username: `adidas` \
-password: `pas`
+URL: `jdbc:oracle:thin:@localhost:11521:XE` \
+username: `SYSTEM` \
+password: `testing12345`
