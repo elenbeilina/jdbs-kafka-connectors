@@ -78,7 +78,11 @@ services:
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
     command: "bash -c 'echo Installing connector plugins && \
+                           confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:5.5.0 && \
                            confluent-hub install --no-prompt jcustenborder/kafka-connect-transform-xml:0.1.0.20 && \
+                           echo Downloading JDBC drivers && \
+                           cd /usr/share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib && \
+                           curl https://maven.xwiki.org/externals/com/oracle/jdbc/ojdbc8/12.2.0.1/ojdbc8-12.2.0.1.jar -o ojdbc8-12.2.0.1.jar && \
                            echo Launch the Kafka Connect worker && \
                            /etc/confluent/docker/run && \
                            sleep infinity'"
@@ -107,15 +111,13 @@ services:
     networks:
       - kafka-connect
 
-  pg-db:
-    image: postgres:12
-    restart: always
-    container_name: pg-db
+  oracle:
+    image: oracle/database:18.4.0-xe
+    container_name: oracle
     ports:
-      - 5432:5432
+      - "11521:1521"
     environment:
-      POSTGRES_USER: adidas
-      POSTGRES_PASSWORD: pas
+      - ORACLE_PWD=testing12345
     networks:
       - kafka-connect
 
