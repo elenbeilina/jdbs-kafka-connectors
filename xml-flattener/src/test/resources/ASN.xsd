@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:documentation>GT Nexus schema for ASN</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:element name="ASNMessage" type="ASNMessageType">
+		<xsd:annotation>
+			<xsd:documentation>EDI 856 XML</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="ASNMessageType">
+		<xsd:sequence>
+			<xsd:element name="TransactionInfo" type="TransactionInfoType" minOccurs="0"/>
+			<xsd:element name="ASN" type="ASNType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ASNType">
+		<xsd:sequence>
+			<xsd:element name="ASNMessageID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PurposeCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Trigger" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="TriggerDetail" type="TriggerDetailType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>This is for the Trigger detail in Outbound ASN that means which actual object or element caused the outbound ASN triggering.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProcessingInstructions" minOccurs="0" maxOccurs="unbounded">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="ProcessManifestByOrderReference"/>
+						<xsd:enumeration value="ProcessMilestones"/>
+						<xsd:enumeration value="ProcessMilestonesOnly"/>
+						
+						<xsd:enumeration value="PoMatchingOk"/>
+						
+						<xsd:enumeration value="PoMatchingOff"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="ShipmentID" type="xsd:string" minOccurs="0"/>
+			
+			<xsd:element name="ShipmentType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ShipmentStatus" type="xsd:string" minOccurs="0"/>  
+			
+			<xsd:element name="PartyInfo" type="PartyInfoType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>PartyInfo Types - OUTBOUND only</xsd:documentation>
+					<xsd:documentation>Provider</xsd:documentation>
+					<xsd:documentation>Customer</xsd:documentation>
+					<xsd:documentation>Carrier</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Mode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Carrier" type="PartyType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>INBOUND only</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Voyage" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Vessel" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Routing" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="OriginCity" type="CityType" minOccurs="0"/>
+			<xsd:element name="PortOfLoading" type="CityType" minOccurs="0"/>
+			<xsd:element name="PortOfDischarge" type="CityType" minOccurs="0"/>
+			<xsd:element name="BLDestination" type="CityType" minOccurs="0"/>
+			<xsd:element name="EstBLDestDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="EstOnBoardDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="EstDepartDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="EstDischargePortDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="ChargeableWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="DimensionalWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="ActualWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="Volume" type="VolumeType" minOccurs="0"/>
+			<xsd:element name="LadingQuantity" type="CountableType" minOccurs="0"/>
+			
+			<xsd:element name="Charges" type="CostType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Supported Cost Types - Inbound/Outbound</xsd:documentation>
+					<xsd:documentation>Freight</xsd:documentation>
+					<xsd:documentation>Invoice</xsd:documentation>
+					<xsd:documentation>Origin</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="References" type="ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xsd:element name="ReferenceDates" type="DateType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Supported Reference Types - Outbound</xsd:documentation>
+					<xsd:documentation>ContainerDate1</xsd:documentation>
+					<xsd:documentation>ContainerDate2</xsd:documentation>
+					<xsd:documentation>ContainerDate3</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MilestoneMessage" type="MilestoneDataMessageType" minOccurs="0"/>
+			<xsd:element name="Container" type="ASNContainerType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ASNContainerType">
+		<xsd:sequence>
+			<xsd:element name="LoadPlanName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ContainerNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ContainerType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ContainerTypeName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ContainerLoad" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>On UI &quot;Container Load&quot; is re-labeled as &quot;Load Type&quot;. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LoadType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>On UI  &quot;Load Type&quot; is Re-labeled as &quot;Load/Unload Option&quot;</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SealNumber" type="xsd:string" minOccurs="0"/>
+			
+			<xsd:element name="Charges" type="CostType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Supported Cost Types - Inbound/Outbound</xsd:documentation>
+					<xsd:documentation>Freight</xsd:documentation>
+					<xsd:documentation>Invoice</xsd:documentation>
+					<xsd:documentation>Origin</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ServiceType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ContractNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceNumber1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceNumber2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceNumber3" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ChargeableWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="DimensionalWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="ActualWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="Volume" type="VolumeType" minOccurs="0"/>
+			<xsd:element name="LadingQuantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="ReasonCodeTypes" type="ReasoncodesType" minOccurs="0" maxOccurs="1"/>
+			
+			<xsd:element name="ReferenceDates" type="DateType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="References" type="ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="Comments" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LineItems" type="ASNLineItemType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="PackUnitList" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="PackUnitTxnKey" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+                    GT Nexus internal use only.
+                    </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ASNLineItemType">
+		<xsd:sequence>
+			<xsd:element name="LoadSequence" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PONumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LineItemNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>For product matching on line item number</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Quantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="ProductCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>For product matching on PO product code</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProductName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DivisionIdentifier" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ShipWindow" type="ShipWindowType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>For product matching on ship window dates</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BLNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ProNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="InvoiceNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ManufacturerID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ChargeableWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="Weight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="Volume" type="VolumeType" minOccurs="0"/>
+			<xsd:element name="InnerPackQuantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="MasterPackQuantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="CartonRange" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PackageCount" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="Origin" type="CityType" minOccurs="0"/>
+			<xsd:element name="PoLineOriginCity" type="CityType" minOccurs="0"/>
+			<xsd:element name="BLDestination" type="CityType" minOccurs="0"/>
+			<xsd:element name="FinalDestination" type="LocationType" minOccurs="0"/>
+			<xsd:element name="HarmonizedCode" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>OUTBOUND only</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReasonCodeTypes" type="ReasoncodesType" minOccurs="0" maxOccurs="1"/>
+			
+			<xsd:element name="ReferenceDates" type="DateType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Supported Reference Types - Outbound</xsd:documentation>
+					<xsd:documentation>BlDate1</xsd:documentation>
+					<xsd:documentation>BlDate2</xsd:documentation>
+					<xsd:documentation>Supported Reference Types - Inbound</xsd:documentation>
+					<xsd:documentation>UserDefBlDate1</xsd:documentation>
+					<xsd:documentation>UserDefBlDate2</xsd:documentation>
+					<xsd:documentation>UserDefBlDate3</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReferenceNumber1" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceNumber2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceNumber3" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceNumber4" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceNumber5" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceNumber6" type="xsd:string" minOccurs="0"/>
+			
+			<xsd:element name="References" type="ReferenceType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Supported Reference Types - Outbound</xsd:documentation>
+					<xsd:documentation>BlRefNum1</xsd:documentation>
+					<xsd:documentation>BlRefNum2</xsd:documentation>
+					<xsd:documentation>BlRefNum3</xsd:documentation>
+					<xsd:documentation>PaymentTerms</xsd:documentation>
+					<xsd:documentation>POHarmonizedCode</xsd:documentation>
+					<xsd:documentation>Supported Reference Types - Inbound</xsd:documentation>
+					<xsd:documentation>UserDefCmdChar1</xsd:documentation>
+					<xsd:documentation>UserDefCmdChar2</xsd:documentation>
+					<xsd:documentation>UserDefBlChar1</xsd:documentation>
+					<xsd:documentation>UserDefBlChar2</xsd:documentation>
+					<xsd:documentation>UserDefBlChar3</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			
+			<xsd:element name="PartyInfo" type="PartyInfoType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Supported PartyInfo Types - Outbound</xsd:documentation>
+					<xsd:documentation>Department</xsd:documentation>
+					<xsd:documentation>Supplier</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ItemAttributes" type="ItemAttributesType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="Assortment" type="AssortmentType" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xsd:element name="Charges" type="CostType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Supported Cost Types - Inbound/Outbound</xsd:documentation>
+					<xsd:documentation>Freight</xsd:documentation>
+					<xsd:documentation>Invoice</xsd:documentation>
+					<xsd:documentation>Origin</xsd:documentation>
+					<xsd:documentation>POFirstCost (outbound only)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProratedCharges" type="ChargeType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Describes Landed Cost Prorated Charge Details for Outbound.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			
+			<xsd:element name="MilestoneMessage" type="MilestoneDataMessageType" minOccurs="0"/>
+			<xsd:element name="PackUnitItemIdentifier" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="TransactionInfoType">
+		<xsd:sequence>
+			<xsd:element name="MessageSender" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="MessageRecipient" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The recipient of the file</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MessageID" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Unique ID for message</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Created" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Timestamp for the file</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FileName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="MessageOriginator" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation/>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PartyType">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Address" type="SimpleAddressType" minOccurs="0"/>
+			<xsd:element name="Contact" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PartyInfoType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Address" type="SimpleAddressType" minOccurs="0"/>
+			<xsd:element name="City" type="CityType" minOccurs="0"/>
+			<xsd:element name="PostalCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Email" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="References" type="ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ShipWindowType">
+		<xsd:sequence>
+			<xsd:element name="StartDate" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Do not ship before this date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EndDate" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Do not ship after this date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CancelDate" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Cancel after this date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LocationType">
+		<xsd:sequence>
+			<xsd:element name="LocationCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Address" type="SimpleAddressType" minOccurs="0"/>
+			<xsd:element name="City" type="CityType" minOccurs="0"/>
+			<xsd:element name="PostalCode" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CityType">
+		<xsd:sequence>
+			<xsd:element name="CityName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Free text city name</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CityCode" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The attribute specifies what kind of code is used to identify the city.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="Qualifier" type="xsd:string" use="optional"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="State" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CountryCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CountryName" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="city_id" type="xsd:positiveInteger" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="CountableType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="Unit" type="xsd:string" use="optional"/>
+				<xsd:attribute name="ANSICode" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Outbound only</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="VolumeType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:decimal">
+				<xsd:attribute name="Unit" type="xsd:string" use="optional"/>
+				<xsd:attribute name="ANSICode" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Outbound only</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="WeightType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:decimal">
+				<xsd:attribute name="Unit" type="xsd:string" use="optional"/>
+				<xsd:attribute name="ANSICode" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>Outbound only</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Dimension">
+		<xsd:sequence>
+			<xsd:element name="Length" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="Width" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="Height" type="xsd:double" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DimensionType">
+		<xsd:sequence>
+			<xsd:element name="DimensionInfo" type="Dimension"/>
+		</xsd:sequence>
+		<xsd:attribute name="Unit" type="xsd:string" use="optional"/>
+		<xsd:attribute name="ANSICode" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>Outbound only</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="CostType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="Type" type="xsd:string" use="optional"/>
+				<xsd:attribute name="Currency" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ChargeType">
+		<xsd:annotation>
+			<xsd:documentation>Describes Landed Cost Prorated Charge Details for Outbound.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Category" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="OriginalLevel" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ChargeDate" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>PO: Ship Window End Date.</xsd:documentation>
+					<xsd:documentation>ASN: Shipment Create Date.</xsd:documentation>
+					<xsd:documentation>Generic Invoice: The Charge Date provided in &apos;ChargeDate&apos; segment.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProrateDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="ProratedValueOriginalCurrency" type="ChargeValueType" minOccurs="0"/>
+			<xsd:element name="ExchangeRate" type="ExchangeRateType" minOccurs="0"/>
+			<xsd:element name="ProratedValueConvertedCurrency" type="ChargeValueType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ChargeValueType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="Currency" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="ExchangeRateType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="Date" type="xsd:dateTime" use="required"/>
+				<xsd:attribute name="SourceCurrency" type="xsd:string" use="required"/>
+				<xsd:attribute name="TargetCurrency" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="ItemAttributesType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Value" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="References" type="ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReferenceType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Value" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReferenceFieldType">
+		<xsd:sequence>
+			<xsd:element name="Reference" type="ReferenceType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReferenceValueType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Value" type="xsd:double" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StringReferenceType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Value" type="String255Type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DateReferenceType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Value" type="xsd:dateTime" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="IntegerReferenceType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Value" type="xsd:integer" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DoubleReferenceType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Value" type="xsd:double" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DateType">
+		<xsd:sequence>
+			<xsd:element name="ReferenceDateType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ReferenceDate" type="xsd:dateTime" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReasoncodesType">
+		<xsd:sequence>
+			<xsd:element name="ReasonCode" type="ReasonCodeType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						 Can be there only in O/B. It can appear at the Container or Container Detail Level.
+                    </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReasonCodeType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string"/>
+			<xsd:element name="Code" type="xsd:string"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TriggerDetailType">
+		<xsd:sequence>
+			<xsd:element name="Type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Value" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Status" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AssortmentType">
+		<xsd:sequence>
+			<xsd:element name="Sku" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="UPC" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Quantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="MasterPackQuantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="InnerPackQuantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="InnersPerMaster" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="CartonCount" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="CartonRange" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TotalWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="TotalVolume" type="VolumeType" minOccurs="0"/>
+			<xsd:element name="FirstCostPrice" type="PriceType" minOccurs="0"/>
+			<xsd:element name="LandedCostPrice" type="PriceType" minOccurs="0"/>
+			<xsd:element name="RetailCostPrice" type="PriceType" minOccurs="0"/>
+			<xsd:element name="HarmonizedCodeInfo" type="HarmonizedCodeType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="References" type="ReferenceType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[
+ 						List of valid values:
+ 							"Color", "Dimension", "SizeCategory", "Size",
+							"UserDefChar1", "UserDefChar2", "UserDefChar3", "UserDefChar4", "UserDefChar5"
+ 						Values supported for backward compatibility (only used if their corresponding top level elements have not been specified):
+							"FirstCost", "LandedCost", "RetailCost", "UPCNumber"
+ 					]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ItemAttributes" type="ItemAttributesType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="PackUnitItemIdentifier" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SimpleAddressType">
+		<xsd:sequence>
+			<xsd:element name="AddressLine" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PriceType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="Currency" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:simpleType name="String255Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="255"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="String50Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="HarmonizedCodeType">
+		<xsd:sequence>
+			<xsd:element name="References" type="ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="ReferenceValues" type="ReferenceValueType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="HarmonizedAttributes" type="ItemAttributesType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="ReferenceList">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="ReferenceFieldType">
+                </xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="PackUnitList">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="PackUnitFieldType"/>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="PackUnitFieldType">
+		<xsd:sequence>
+			<xsd:element name="PackUnit" type="PackUnitType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PackUnitType">
+		<xsd:sequence>
+			<xsd:element name="PackUnitHeader" type="PackUnitHeaderType"/>
+			<xsd:element name="PackUnitItemList" type="PackUnitItemFieldType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PackUnitHeaderType">
+		<xsd:sequence>
+			<xsd:element name="LPN" type="String255Type"/>
+			<xsd:element name="PackUnitNo" type="String255Type" minOccurs="0"/>
+			<xsd:element name="PalletId" type="String255Type" minOccurs="0"/>
+			<xsd:element name="LOTNumber" type="String255Type" minOccurs="0"/>
+			<xsd:element name="PackUnitType" type="String255Type" minOccurs="0"/>
+			<xsd:element name="PackUnitSizeType" type="String255Type" minOccurs="0"/>
+			<xsd:element name="LastPackUnit" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="MixedPackUnit" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="Archive" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="Dimension" type="DimensionType" minOccurs="0"/>
+			<xsd:element name="Quantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="Weight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="LabelStatus" type="String255Type" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						OutBound Only.
+						Supported Purpose values:
+						------------------------
+						NEW
+						PRE_PRINTED
+						PRINTED
+						VERIFIED
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PackUnitStatus" type="String255Type" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						OutBound Only.
+						Supported Purpose values:
+						------------------------
+						NEW
+						DRAFT
+						SAVED
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="ReferenceList" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<type/> can be only
+						Reference1
+						Reference2
+						Reference3
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PackUnitItemFieldType">
+		<xsd:sequence>
+			<xsd:element name="PackUnitItem" type="PackUnitItemType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PackUnitItemType">
+		<xsd:sequence>
+			<xsd:element name="PackUnitItemIdentifier" type="xsd:string" minOccurs="0"/>
+			
+			<xsd:element name="PONumber" type="String255Type" minOccurs="0"/>
+			<xsd:element name="POReference" type="String255Type" minOccurs="0"/>
+			<xsd:element name="POUserDefCharFld1" type="String255Type" minOccurs="0"/>
+			<xsd:element name="POUserDefCharFld2" type="String255Type" minOccurs="0"/>
+			<xsd:element name="POObjIdKey" type="String255Type" minOccurs="0"/>
+			
+			<xsd:element name="POLineNum" type="String255Type" minOccurs="0"/>
+			<xsd:element name="ProductCode" type="String255Type" minOccurs="0"/>
+			<xsd:element name="ProductRefNum" type="String255Type" minOccurs="0"/>
+			<xsd:element name="POLineUserDefCharFld1" type="String255Type" minOccurs="0"/>
+			<xsd:element name="POLineUserDefCharFld2" type="String255Type" minOccurs="0"/>
+			<xsd:element name="FinalDestinationCode" type="String255Type" minOccurs="0"/>
+			<xsd:element name="ShipWindowEnd" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="POLineObjIdKey" type="String255Type" minOccurs="0"/>
+			
+			<xsd:element name="Color" type="String255Type" minOccurs="0"/>
+			<xsd:element name="Size" type="String255Type" minOccurs="0"/>
+			<xsd:element name="SizeCategory" type="String255Type" minOccurs="0"/>
+			<xsd:element name="Dimension" type="String255Type" minOccurs="0"/>
+			<xsd:element name="UPC" type="String255Type" minOccurs="0"/>
+			<xsd:element name="AssortmentUserDefChar1" type="String255Type" minOccurs="0"/>
+			<xsd:element name="AssortmentUserDefChar2" type="String255Type" minOccurs="0"/>
+			<xsd:element name="AssortmentUserDefChar3" type="String255Type" minOccurs="0"/>
+			<xsd:element name="AssortmentUserDefChar4" type="String255Type" minOccurs="0"/>
+			<xsd:element name="AssortmentUserDefChar5" type="String255Type" minOccurs="0"/>
+			
+			<xsd:element name="EAN" type="String255Type" minOccurs="0"/>
+			<xsd:element name="PackType" type="String50Type" minOccurs="0"/>
+			<xsd:element name="QuotaCategoryNum" type="String255Type" minOccurs="0"/>
+			<xsd:element name="Quantity" type="CountableType" minOccurs="0"/>
+			<xsd:element name="Weight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="NetWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="NetNetWeight" type="WeightType" minOccurs="0"/>
+			<xsd:element name="Volume" type="VolumeType" minOccurs="0"/>
+			<xsd:element ref="ReferenceList" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<type/><![CDATA[ can be only
+                        Reference1
+                        Reference2
+                        Reference3
+                        Reference4
+                        Reference5
+                    ]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	
+	<xsd:complexType name="MilestoneDataMessageType">
+		<xsd:sequence>
+			<xsd:element name="TransactionInfo" type="TransactionInfoType" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="OneMilestoneMultipleReferences" type="OneMilestoneMultipleReferencesType" minOccurs="1" maxOccurs="unbounded"/>
+				<xsd:element name="OneReferenceMultipleMilestones" type="OneReferenceMultipleMilestonesType" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OneMilestoneMultipleReferencesType">
+		<xsd:sequence>
+			<xsd:element name="MilestoneInfo" type="MilestoneInfoType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="ReferenceInfo" type="ReferenceInfoType" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OneReferenceMultipleMilestonesType">
+		<xsd:sequence>
+			<xsd:element name="ReferenceInfo" type="ReferenceInfoType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="MilestoneInfo" type="MilestoneInfoType" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="MilestoneInfoType">
+		<xsd:sequence>
+			
+			<xsd:element name="PurposeCode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ProcessingStatus" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>This element is to provide processing status of each mileston type in O/B ASN.</xsd:documentation>					
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MilestoneMessageRecipient" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			
+			<xsd:element name="MilestoneMessageID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="MilestoneTypeCode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			
+			<xsd:element name="MilestoneTypeName" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="MilestoneFormatId" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+			
+			<xsd:element name="MilestoneReasonCode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="MilestoneTime" type="MilestoneTimeType" minOccurs="1" maxOccurs="4">
+				<xsd:annotation>
+					<xsd:documentation>At least on of these two: Event time,</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="City" type="CityType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="CustomMilestoneField" type="CustomMilestoneFieldType" minOccurs="0" maxOccurs="4"/>
+			<xsd:element name="Comments" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ExtraMilestoneInfoId" type="ExtraMilestoneInfoIdType" minOccurs="0" maxOccurs="10"/>
+			<xsd:element name="UserDefinedData" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="UserDefinedChar1" type="string100" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedChar2" type="string100" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedChar3" type="string100" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedChar4" type="string100" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedChar5" type="string100" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedInt1" type="xsd:integer" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedInt2" type="xsd:integer" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedInt3" type="xsd:integer" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedInt4" type="xsd:integer" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedInt5" type="xsd:integer" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedFloat1" type="xsd:float" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedFloat2" type="xsd:float" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedFloat3" type="xsd:float" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedFloat4" type="xsd:float" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedFloat5" type="xsd:float" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedDate1" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedDate2" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedDate3" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedDate4" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+						<xsd:element name="UserDefinedDate5" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="ReferenceInfoType">
+		<xsd:sequence>
+			<xsd:element name="ReferenceId" type="ReferenceIdType" minOccurs="1" maxOccurs="15"/>
+			<xsd:element name="ShipWindow" type="ShipWindowType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Quantity" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="CountableType">
+							<xsd:attribute name="AddQuantity" type="BooleanType" use="optional" default="No"/>
+							<xsd:attribute name="AutoFillQuantity" type="BooleanType" use="optional" default="Yes"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="QuantityUnit" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ExtraReferences" type="ReferenceType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>This element is neither consumed nor produced by the application.</xsd:documentation>
+					<xsd:documentation>This element can be used to communicate data between intermediate translation processes</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MilestoneTimeType">
+		<xsd:attribute name="dateTime" type="xsd:dateTime" use="required"/>
+		<xsd:attribute name="timeZone" type="xsd:string"/>
+		
+		<xsd:attribute name="whichTime" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="EventTime"/>
+					<xsd:enumeration value="GTNexusReceiveTime"/>
+					<xsd:enumeration value="GTNexusStartedProcessingTime"/>
+					<xsd:enumeration value="OutlookTime"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="CustomMilestoneFieldType">
+		<xsd:attribute name="info" type="xsd:string"/>
+		<xsd:attribute name="infoType" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="ExtraMilestoneInfoIdType">
+		<xsd:attribute name="info" type="xsd:string"/>
+		<xsd:attribute name="type">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="CarrierCode"/>
+					<xsd:enumeration value="CarrierName"/>
+					<xsd:enumeration value="Mode"/>
+					<xsd:enumeration value="CharLabel"/>
+					<xsd:enumeration value="CharValue"/>
+					
+					<xsd:enumeration value="UserDefinedMilestoneChar1"/>
+					<xsd:enumeration value="UserDefinedMilestoneChar2"/>
+					<xsd:enumeration value="UserDefinedMilestoneChar3"/>
+					<xsd:enumeration value="UserDefinedMilestoneChar4"/>
+					<xsd:enumeration value="UserDefinedMilestoneChar5"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="ReferenceIdType">
+		<xsd:attribute name="reference" type="xsd:string"/>
+		<xsd:attribute name="type">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="BLNumber"/>
+					<xsd:enumeration value="ProNumber"/>
+					<xsd:enumeration value="ContainerNumber"/>
+					<xsd:enumeration value="ShipmentID"/>
+					<xsd:enumeration value="PONumber"/>
+					<xsd:enumeration value="DivisionIdentifier"/>
+					<xsd:enumeration value="LineItemNumber"/>
+					<xsd:enumeration value="ProductCode"/>
+					<xsd:enumeration value="ProductName"/>
+					<xsd:enumeration value="FinalDestinationCode"/>
+					<xsd:enumeration value="ContainerLoadCode"/>
+					
+					<xsd:enumeration value="Vessel"/>
+					<xsd:enumeration value="Voyage"/>
+					<xsd:enumeration value="UserDefCharFld1"/>
+					<xsd:enumeration value="UserDefCharFld2"/>
+					<xsd:enumeration value="UserDefCharFld3"/>
+					<xsd:enumeration value="BookingNumber"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="string100">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BooleanType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Yes"/>
+			<xsd:enumeration value="No"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+</xsd:schema>
