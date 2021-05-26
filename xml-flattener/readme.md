@@ -4,6 +4,12 @@ SMT can be used for specific xml that is located in `data` directory. It is an e
 For this particular case flattening was needed for moving data from kafka topic to oracle database.
 
 ---
+#### Configuration:
+```
+"transforms": "xml_flattener",
+"transforms.xml_flattener.type": "com.aqualen.xmlflattener.XmlFlattener"
+```
+---
 #### Environment:
 Example of environment can be found in `oracle` directory in `docker-compose.yaml` file.
 
